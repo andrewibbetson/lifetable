@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from globals import *
 
 
-def econ(df, discount=True):
+def calculate_econ_costs(df, discount=True):
 
     age_cap = 100
     df = df[df.Age <= age_cap ]
