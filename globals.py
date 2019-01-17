@@ -67,7 +67,7 @@ morb_lost_wages_ppc = 329
 # Relative risk estimates for 10µg increase in PM2.5
 IHD_inc = 1.10
 IHD_cf = 1.28
-mort = 1.11
+non_IHD_mort = 1.11
 
 # 95% confidence intervals
 
@@ -88,84 +88,8 @@ baseline = None
 
 # discounting
 
-def ann_discount_rate(year, discount=0.035):
+DR = 0.035
 
-        if discount=='UK Treasury':
+# econ age cap
 
-            if year <= 30:
-                DR = 0.035
-            elif year > 30 and year <= 75:
-                DR = ((0.035*30) + (0.03*(year-30)))/year
-            else:
-                DR = ((0.035*30) + (0.03*45) + (0.025*(year-75)))/year
-
-        else:
-
-            DR = discount
-
-        ann_DR = 1/((1+DR)**year)
-
-        return ann_DR
-
-
-def pensions_generator(max_age, start_year, end_year):
-
-    pension_list = []
-    for year in range(start_year, end_year):
-
-        for age in range(max_age+1):
-
-            if year - age < m_basic_state_pension_qual_year:
-
-                pension_list.append(m_adj_basic_state_pension)
-
-            elif age >= inc_qual_age_1_age and year >= inc_qual_age_1_year and year < inc_qual_age_2_year:
-
-                pension_list.append(m_adj_new_state_pension)
-
-            elif year >= inc_qual_age_2_age and year >= inc_qual_age_2_year and year < inc_qual_age_3_year:
-
-                pension_list.append(m_adj_new_state_pension)
-
-            elif age >= inc_qual_age_3_age and year >= inc_qual_age_3_year and year < inc_qual_age_4_year:
-
-                pension_list.append(m_adj_new_state_pension)
-
-            elif age >= inc_qual_age_4_age and year >= inc_qual_age_4_year and year < inc_qual_age_5_year:
-
-                pension_list.append(m_adj_new_state_pension)
-
-            else:
-
-                pension_list.append(0)
-                continue
-
-
-        for age in range(max_age+1):
-
-            if year - age < f_basic_state_pension_qual_year:
-
-                pension_list.append(f_adj_basic_state_pension)
-
-            elif age >= inc_qual_age_1_age and year >= inc_qual_age_1_year and year < inc_qual_age_2_year:
-
-                pension_list.append(f_adj_new_state_pension)
-
-            elif age >= inc_qual_age_2_age and year >= inc_qual_age_2_year and year < inc_qual_age_3_year:
-
-                pension_list.append(f_adj_new_state_pension)
-
-            elif age >= inc_qual_age_3_age and year >= inc_qual_age_3_year and year < inc_qual_age_4_year:
-
-                pension_list.append(f_adj_new_state_pension)
-
-            elif age >= inc_qual_age_4_age and year >= inc_qual_age_4_year and year < inc_qual_age_5_year:
-
-                pension_list.append(f_adj_new_state_pension)
-
-            else:
-
-                pension_list.append(0)
-                continue
-
-    return pension_list
+econ_age_cap = 100
